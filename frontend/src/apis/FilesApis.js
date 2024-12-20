@@ -6,7 +6,7 @@ export const getUploadedFiles = async () => {
         const token = localStorage.getItem('token');
         console.log(token)
 
-        const response = await axios.get('http://localhost:3000/api/files/view', { headers: { "Authorization": `Bearer ${token}` } });
+        const response = await axios.get('http://64.226.83.77:3000/api/files/view', { headers: { "Authorization": `Bearer ${token}` } });
         console.log(response)
         return response.data.file
     } catch (error) {
@@ -24,7 +24,7 @@ export const getUploadedFiles = async () => {
 export const uploadFile = async (formData) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.post('http://localhost:3000/api/files/upload', formData, {
+        const response = await axios.post('http://64.226.83.77:3000/api/files/upload', formData, {
             headers: {
                 "Authorization": `Bearer ${token}`, 'Content-Type': 'multipart/form-data',  // Specify content type for file upload
             },

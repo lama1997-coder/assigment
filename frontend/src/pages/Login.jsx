@@ -22,7 +22,7 @@ export default function Login() {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:3000/api/auth/login', { email, password });
+            const response = await axios.post('http://64.226.83.77:3000/api/auth/login', { email, password });
 
             // Save JWT token to localStorage
             localStorage.setItem('token', response.data.token);

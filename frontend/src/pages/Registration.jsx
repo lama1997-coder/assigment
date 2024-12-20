@@ -22,7 +22,7 @@ export default function Register() {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:3000/api/auth/register', { email, password });
+            const response = await axios.post('http://64.226.83.77:3000/api/auth/register', { email, password });
 
             // Save JWT token to localStorage
             localStorage.setItem('token', response.data.message);
