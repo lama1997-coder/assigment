@@ -31,6 +31,9 @@ code {
   gap: 1vh;
   position: relative;
 }
+.container{
+  padding: 25px;
+}
 input{
   border-radius:50px ;
   border: 1px solid #656ED3;
@@ -56,7 +59,7 @@ input{
 }
 
 .upload-btn svg {
-  margin-right: 8px; /* Space between the icon and text */
+  margin-right: 8px; 
 }
 
 table {
@@ -128,7 +131,6 @@ tbody tr:hover {
   background-color: #19692c;
 }
 
-/* Overlay for background dimming when popup is open */
 .overlay {
   position: fixed;
   top: 0;
@@ -140,7 +142,6 @@ tbody tr:hover {
   display: none;
 }
 
-/* Popup window style */
 .popup {
   position: fixed;
   top: 50%;
@@ -159,7 +160,6 @@ tbody tr:hover {
   display: block;
 }
 
-/* Popup content */
 .popup input,
 .popup button {
   margin: 10px 0;

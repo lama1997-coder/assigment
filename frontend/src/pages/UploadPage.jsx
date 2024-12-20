@@ -28,7 +28,7 @@ const UploadPage = () => {
     formData.append("tags", tag);
 
     const response = await uploadFile(formData);
-    if (response.status === 1) {
+    if (response.status && response.status === 1) {
       setFiles((prev) => [
         ...prev,
         {
@@ -42,6 +42,10 @@ const UploadPage = () => {
       setSelectedFile(null);
       setTag("");
       setIsPopupOpen(false);
+    }
+    else{
+      window.location.href = '/login';
+
     }
   };
 
@@ -123,7 +127,7 @@ const UploadPage = () => {
               <td>{file.filename}</td>
               <td>{file.fileType}</td>
               <td>{file.tags.join(",")}</td>
-              <td>{file.views}</td>
+              <td>{file.views||0}</td>
 
               <td>
                 <div className="action-buttons">
