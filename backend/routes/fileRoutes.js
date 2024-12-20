@@ -61,13 +61,18 @@ router.post('/upload', authenticate, upload.single('file'), async (req, res) => 
 });
 
 // File view route
-router.get('/view/:fileId', async (req, res) => {
+router.get('/viewtest/:filename', async (req, res) => {
   try {
-    const file = await File.findById(req.params.fileId);
+    debugger
+    const { filename } = req.params;
+    console.log(filename)
+
+    const file = await File.findOne({filename:filename});
 
     if (!file) {
       return res.status(404).json({ message: 'File not found' });
     }
+    console.log(file)
 
     // Increment view count
     file.views += 1;

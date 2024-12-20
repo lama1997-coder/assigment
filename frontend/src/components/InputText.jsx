@@ -1,13 +1,13 @@
 
 import React from "react"
-export default function InputText({ type = 'text', id, value,label, placeholder, onChange, ...props }) {
+export default function InputText({ type = 'text', id, value, label, placeholder, onChange, ...props }) {
 
 
   return (
     <div style={styles.inputContainer}>
       <label>
         {label}
-        </label>
+      </label>
       <input
         type={type}
         id={id}
@@ -29,7 +29,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     marginBottom: '15px',
-    gap:'1vh'
+    gap: '1vh'
   },
   label: {
     marginBottom: '5px',
