@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 export default function Register() {
-
-
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const handleEmailChange = (e) => setEmail(e.target.value);
@@ -14,9 +12,8 @@ export default function Register() {
 
     const handleRegistration = async (e) => {
         e.preventDefault();
-        setErrorMessage(''); // Clear previous error
+        setErrorMessage('');
 
-        // Basic validation
         if (!email || !password) {
             setErrorMessage('Both email and password are required.');
             return;
@@ -24,12 +21,10 @@ export default function Register() {
         try {
             const response = await axios.post('http://64.226.83.77:3000/api/auth/register', { email, password });
 
-            // Save JWT token to localStorage
             localStorage.setItem('token', response.data.message);
 
-            // Redirect to a dashboard or home page
             alert('Register successful');
-            window.location.href = '/login'; // Change this path as needed
+            window.location.href = '/login';
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message) {
                 setErrorMessage(error.response.data.message);
@@ -48,7 +43,6 @@ export default function Register() {
                     <InputText placeholder='Email' label='Email:' onChange={handleEmailChange} value={email} />
                     <InputText placeholder='Password' label='Password:' type="password" onChange={handlePasswordChange} value={password} />
                     <button type="submit" style={styles.button} >Login</button>
-
                 </form>
             </div>
             <div style={{
@@ -56,8 +50,8 @@ export default function Register() {
             }}></div>
         </div>
     )
-
 }
+
 const styles = {
     errorMessage: {
         color: 'red',

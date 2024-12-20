@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
-// Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, './uploads/');
@@ -18,10 +17,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Middleware to check JWT token
 const authenticate = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
-  console.log('Token:', token);  // Debugging token value
+  console.log('Token:', token);  
 
   if (!token) {
     return res.status(401).json({ message: 'No token, authorization denied' });
@@ -29,8 +27,7 @@ const authenticate = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log('Decoded:', decoded);  // Debugging the decoded token value
-
+    console.log('Decoded:', decoded);  
     req.user = decoded.userId;
     next();
   } catch (error) {
@@ -38,7 +35,6 @@ const authenticate = (req, res, next) => {
   }
 };
 
-// File upload route
 router.post('/upload', authenticate, upload.single('file'), async (req, res) => {
   const { tags } = req.body;
   const { filename, mimetype } = req.file;
@@ -50,7 +46,7 @@ router.post('/upload', authenticate, upload.single('file'), async (req, res) => 
       fileType: mimetype,
       tags: tags.split(','),
       user: req.user,
-            fileUrl: fileUrl,  // Save the public URL in the database
+            fileUrl: fileUrl,  
     });
 
     await newFile.save();
@@ -60,8 +56,7 @@ router.post('/upload', authenticate, upload.single('file'), async (req, res) => 
   }
 });
 
-// File view route
-router.get('/viewtest/:filename', async (req, res) => {
+router.get('/view/:filename', async (req, res) => {
   try {
     debugger
     const { filename } = req.params;
@@ -74,13 +69,16 @@ router.get('/viewtest/:filename', async (req, res) => {
     }
     console.log(file)
 
-    // Increment view count
     file.views += 1;
     await file.save();
+    const filePath = path.join(__dirname,'..', 'uploads', filename);
+    console.log('filePath',filePath)
+    console.log(filePath)
 
-    res.status(200).json({ file });
+     return res.sendFile(filePath); 
+
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: error.message });
   }
 });
 

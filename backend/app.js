@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const connectDB = require('./database/db'); // Import the connectDB function
+const connectDB = require('./database/db');
 const path = require('path');
 
 const dotenv = require('dotenv');
@@ -13,12 +13,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-
-
 app.use('/api/auth', userRoutes);
 app.use('/api/files', fileRoutes);
-//app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/uploads',fileRoutes);
+ app.use('/uploads',fileRoutes)
 
 connectDB()
 const PORT = process.env.PORT || 5000;

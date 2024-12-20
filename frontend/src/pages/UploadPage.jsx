@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { getUploadedFiles, uploadFile } from "../apis/FilesApis";
-import { FaUpload } from "react-icons/fa";
+import { FaUpload ,FaGripVertical } from "react-icons/fa";
 
 const UploadPage = () => {
   const [files, setFiles] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [tag, setTag] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [draggedRowIndex, setDraggedRowIndex] = useState(null);
 
   useEffect(() => {
-    // Simulate fetching files from API
     getUploadedFiles().then(setFiles);
   }, []);
 
@@ -28,16 +28,15 @@ const UploadPage = () => {
     formData.append("tags", tag);
 
     const response = await uploadFile(formData);
-    if (response.status===1) {
+    if (response.status === 1) {
       setFiles((prev) => [
         ...prev,
         {
           _id: response.file._id,
           filename: response.file.filename,
           fileType: response.file.fileType,
-          tags:response.file.tags,
-          fileUrl:response.file.fileUrl,
-          // date: new Date().toLocaleDateString(),
+          tags: response.file.tags,
+          fileUrl: response.file.fileUrl,
         },
       ]);
       setSelectedFile(null);
@@ -46,22 +45,29 @@ const UploadPage = () => {
     }
   };
 
-  const handleDelete = (id) => {
-    // Simulate deletion (you would call an API here)
-    setFiles((prev) => prev.filter((file) => file.id !== id));
+  const handleRowDragStart = (index) => {
+    setDraggedRowIndex(index);
   };
 
-  const handleShare = (id) => {
-    alert(`Sharing file with ID: ${id}`);
+  const handleRowDragOver = (event, index) => {
+    event.preventDefault();
+    if (draggedRowIndex === index) return;
+  };
+
+  const handleRowDrop = (event, index) => {
+    const reorderedFiles = [...files];
+    const [removedRow] = reorderedFiles.splice(draggedRowIndex, 1);
+    reorderedFiles.splice(index, 0, removedRow);
+    setFiles(reorderedFiles);
+    setDraggedRowIndex(null);
   };
 
   return (
     <div className="container">
-       <h1>Files List</h1>
+      <h1>Files List</h1>
       <button onClick={() => setIsPopupOpen(true)} className="upload-btn">
         <FaUpload /> Upload File
       </button>
-
 
       <div
         className={`overlay ${isPopupOpen ? "active" : ""}`}
@@ -69,7 +75,10 @@ const UploadPage = () => {
       ></div>
       <div className={`popup ${isPopupOpen ? "active" : ""}`}>
         <h2>Upload File</h2>
-        <input type="file" onChange={handleFileChange}    accept="image/*, video/*" 
+        <input
+          type="file"
+          onChange={handleFileChange}
+          accept="image/*, video/*"
         />
         <input
           type="text"
@@ -84,21 +93,38 @@ const UploadPage = () => {
       <table>
         <thead>
           <tr>
+            <th></th>
             <th>File Name</th>
             <th>Type</th>
             <th>Tag</th>
-            {/* <th>Uploaded Date</th> */}
+            <th>Views</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {files.length==0&&<p>There is no data</p>}
-          {files.map((file) => (
-            <tr key={file._id}>
+          {files.length === 0 && <p>There is no data</p>}
+          {files.map((file, index) => (
+            <tr
+              key={file._id}
+              draggable
+              onDragStart={() => handleRowDragStart(index)}
+              onDragOver={(event) => handleRowDragOver(event, index)}
+              onDrop={(event) => handleRowDrop(event, index)}
+            >
+              <td>
+              <FaGripVertical
+                  style={{
+                    cursor: "grab",
+                    marginRight: "10px",
+                    fontSize: "18px",
+                  }}
+                />
+              </td>
               <td>{file.filename}</td>
               <td>{file.fileType}</td>
-              <td>{file.tags.join(',')}</td>
-              {/* <td>{file.date}</td> */}
+              <td>{file.tags.join(",")}</td>
+              <td>{file.views}</td>
+
               <td>
                 <div className="action-buttons">
                   <button
@@ -107,12 +133,6 @@ const UploadPage = () => {
                   >
                     Share
                   </button>
-                  {/* <button
-                    className="delete"
-                    onClick={() => handleDelete(file.id)}
-                  >
-                    Delete
-                  </button> */}
                 </div>
               </td>
             </tr>

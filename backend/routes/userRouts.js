@@ -36,7 +36,6 @@ router.post('/login', async (req, res) => {
       return res.status(404).json({status:0, message: 'User not found' });
     }
 
-
     const isMatch = await user.matchPassword(password);
 
     if (!isMatch) {
@@ -49,7 +48,6 @@ router.post('/login', async (req, res) => {
 
    return res.json({status:1,message: 'Login Sucsess' , token });
   } catch (error) {
-   // return res.status(200).json({user:token})
 
     res.status(500).json({ message: error });
   }

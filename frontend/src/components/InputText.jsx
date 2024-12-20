@@ -2,7 +2,6 @@
 import React from "react"
 export default function InputText({ type = 'text', id, value, label, placeholder, onChange, ...props }) {
 
-
   return (
     <div style={styles.inputContainer}>
       <label>
@@ -17,14 +16,9 @@ export default function InputText({ type = 'text', id, value, label, placeholder
         {...props} />
     </div>
   )
-
-
-
-
 }
 
 const styles = {
-
   inputContainer: {
     display: 'flex',
     flexDirection: 'column',
@@ -46,5 +40,4 @@ const styles = {
     outline: 'none',
     transition: 'border-color 0.3s',
   },
-
 }

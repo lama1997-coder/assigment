@@ -6,8 +6,7 @@ const fileSchema = new mongoose.Schema({
   tags: [String],
   views: { type: Number, default: 0 },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User',required: true  },
-  fileUrl: { type: String },  // Add the fileUrl field to the schema
-
+  fileUrl: { type: String },
 });
 
 module.exports = mongoose.model('File', fileSchema);

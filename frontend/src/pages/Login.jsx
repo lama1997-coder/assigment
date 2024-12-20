@@ -3,20 +3,16 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 export default function Login() {
-
-
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const handleEmailChange = (e) => setEmail(e.target.value);
     const handlePasswordChange = (e) => setPassword(e.target.value);
     const [errorMessage, setErrorMessage] = useState('');
 
-
     const handleLogin = async (e) => {
         e.preventDefault();
-        setErrorMessage(''); // Clear previous error
+        setErrorMessage('');
 
-        // Basic validation
         if (!email || !password) {
             setErrorMessage('Both email and password are required.');
             return;
@@ -24,12 +20,10 @@ export default function Login() {
         try {
             const response = await axios.post('http://64.226.83.77:3000/api/auth/login', { email, password });
 
-            // Save JWT token to localStorage
             localStorage.setItem('token', response.data.token);
 
-            // Redirect to a dashboard or home page
             alert('Login successful');
-            window.location.href = '/files'; // Change this path as needed
+            window.location.href = '/files';
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message) {
                 setErrorMessage(error.response.data.message);
@@ -55,18 +49,15 @@ export default function Login() {
             <div style={{
                 backgroundImage: 'url(./logo.png)', backgroundSize: 'contain', backgroundRepeat: 'no-repeat', backgroundPosition: 'center',  // Center the background image
             }}></div>
-            {/* <img src='./logo.png' style={{  width: '50vh', height: '50vh', right: '-30%' }} ></img> */}
 
         </div>
-
     )
-
 }
+
 const styles = {
     errorMessage: {
         color: 'red',
         marginBottom: '15px',
-
     },
     button: {
         backgroundColor: '#656ED3',
